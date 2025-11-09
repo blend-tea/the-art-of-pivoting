@@ -163,59 +163,6 @@ This required a deliberate change in mindset. Rather than treating established i
 
 This shift also changed how analysts think: instead of asking which indicators matter most, we now ask which indicators adversaries fail to hide. This perspective becomes essential as we move into composite correlation and clustering techniques, where weak signals converge into strong intelligence.
 
-```mermaid
-flowchart LR
-    subgraph S[Data Sources]
-      A1[Social networks]
-      A2[Tor hidden services]
-      A3[Forums & paste sites]
-      A4[Web infra (clear/Tor)]
-    end
-
-    S --> I[AIL Ingestion & Extraction]
-
-    subgraph O[Flexible Object Types]
-      O1[IPs, Domains, Hashes]
-      O2[QR codes / Barcodes]
-      O3[Cookie names/values]
-      O4[HTTP headers (HHHash)]
-      O5[DOM structure (DOM hash)]
-      O6[Favicon hash (MMH3)]
-      O7[PGP metadata / Keys]
-      O8[Onion vanity prefixes]
-    end
-
-    I --> O
-
-    subgraph C[Dynamic Correlation Engine]
-      direction TB
-      C1[Exact match (baseline)]
-      C2[Fuzzy match (SSDEEP/TLSH)]
-      C3[Group match (CIDR/ASN)]
-      C4[Composite correlation<br/>(stack weak+strong)]
-      C5[Clustering & scoring<br/>(outliers → leads)]
-    end
-
-    O --> C
-
-    subgraph R[Results & Action]
-      R1[MISP events/enrichment]
-      R2[Infra clusters & maps]
-      R3[Prioritized leads]
-      R4[Analyst validation loop]
-    end
-
-    C --> R
-    R4 --> C4
-
-    %% Emphasis notes
-    classDef weak fill:#fff6e6,stroke:#f0a500
-    classDef strong fill:#e6fff2,stroke:#2aa56b
-    class O2,O3,O4,O5,O6,O7,O8 weak;
-    class O1 strong;
-    class C4,C5 strong;
-```
-
 ### Looking at “Broken” Indicators — and Still Using Them
 
 Some indicators are known to be imperfect, yet remain surprisingly effective in real investigations. MurmurHash3, for example, is still widely used for favicon correlation. A single MMH3 hash can quickly reveal Tor hidden services that are also exposed on the clear web, allowing analysts to pivot across seemingly unrelated infrastructure with minimal effort.
