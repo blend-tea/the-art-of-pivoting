@@ -509,6 +509,89 @@ Graphically encoded information reinforces a recurring theme in pivot-based anal
 
 When treated as first-class data points—extracted, normalized, and correlated—they enable pivots that bypass many of the defensive measures designed to evade traditional indicator-based analysis. Used in combination with other uncommon data points, they significantly expand the analyst’s investigative surface without increasing reliance on brittle or easily rotated indicators.
 
+### HTTP Header Structure Hashing (HHHash): Fingerprinting Server Behavior
+
+HTTP response headers are one of the most consistently overlooked sources of correlation in infrastructure analysis. While analysts often focus on domains, IP addresses, certificates, or web content, the structure and composition of HTTP headers—particularly in HTTP version 1—can act as subtle yet stable fingerprints of server behavior.
+
+This observation led to the development of **HTTP Header Hashing (HHHash)**[^hhhash]: a lightweight technique that captures and hashes the *structure* of HTTP response headers rather than their dynamic values. The approach is intentionally simple and designed for pivoting, clustering, and exploratory analysis rather than precise identification or attribution.
+
+> :brain: When searching for new types of data points, focusing exclusively on values can distract from equally valuable structural characteristics. In many cases, analyzing the structure of a data point—rather than its dynamic or volatile values—yields more stable and actionable correlation opportunities, especially when those values are difficult to collect, store, or correlate reliably.
+
+#### Core Idea
+
+The core idea behind HHHash is that many servers expose a characteristic pattern in how they construct HTTP response headers:
+
+- Which headers are present
+- The order in which they appear
+- The casing and formatting conventions
+- The combination of default and custom headers
+
+These characteristics often remain stable across deployments because they are tied to:
+
+- Specific web server software or versions
+- Reverse proxies and load balancers
+- Framework defaults
+- Custom middleware or deployment templates
+
+By hashing the normalized structure of HTTP/1 response headers, HHHash produces a compact representation that can be used as a correlation key.
+
+#### Why HTTP/1 Headers Are Still Relevant
+
+HHHash explicitly targets **HTTP version 1**, where headers are transmitted in clear text and retain ordering and formatting information. Later protocol versions (HTTP/2 and HTTP/3) change header semantics significantly through compression and binary framing, making this approach unsuitable or far less informative.
+
+Despite the age of HTTP/1, it remains widely deployed across:
+
+- Phishing and scam infrastructure
+- Command-and-control panels
+- Underground services
+- Legacy or misconfigured servers
+- Transitional infrastructure exposed briefly during deployment
+
+As a result, HTTP/1 header fingerprints continue to offer real-world investigative value.
+
+#### HHHash as a Correlation Primitive
+
+HHHash is particularly effective when used to:
+
+- Cluster infrastructure deployed using the same server templates
+- Link short-lived or rotating hosts operated by the same actor
+- Identify reused reverse-proxy or backend configurations
+- Pivot between domains or IPs that otherwise share no obvious indicators
+
+Because HHHash abstracts away volatile values (timestamps, cookies, dynamic identifiers), it focuses on structural similarity rather than content equality.
+
+In practice, HHHash often reveals relationships between servers that appear unrelated at the network or domain level but share the same operational setup.
+
+#### Composite Correlation with HTTP Headers
+
+Like other uncommon data points, HHHash is most effective when combined with additional signals:
+
+- Shared HHHash and identical DOM structure
+- HHHash combined with favicon reuse
+- HHHash reinforced by hosting patterns or deployment timing
+- HHHash aligned with similar TLS configurations
+
+In composite correlation, HTTP header fingerprints often act as a *secondary* confirmation signal, strengthening hypotheses formed through other pivots.
+
+#### Noise and Interpretation Challenges
+
+HTTP header correlation must be interpreted carefully.
+
+- Common web servers and default configurations can produce high-cardinality hashes.
+- Content delivery networks and managed hosting providers may normalize headers across many unrelated customers.
+- Security appliances can inject or reorder headers, obscuring origin behavior.
+
+High-volume HHHash correlations often indicate generic infrastructure and should be deprioritized. Conversely, low-volume or thematically consistent reuse—especially across short timeframes or unusual hosting environments—can be highly informative.
+
+As with other weak or structural indicators, HHHash should guide investigation, not conclude it.
+
+#### Positioning HHHash Among Uncommon Data Points
+
+HHHash belongs to a broader class of **behavioral and structural fingerprints**: indicators that do not identify *what* a server hosts, but *how* it behaves. Its value lies in exploiting operational reuse and default configurations that adversaries rarely consider intelligence-relevant.
+
+Because HTTP headers sit at the intersection of application logic, middleware, and infrastructure, they often encode subtle but persistent characteristics of deployment practices. When extracted and correlated systematically, these characteristics enable pivots that bypass many of the evasion strategies aimed at traditional indicators.
+
+Used alongside dom-hash, favicon hashing, and other uncommon data points, HHHash reinforces a central theme of pivot-based analysis: meaningful relationships are often hidden in plain sight, embedded in technical details that attackers assume are insignificant.
 
 ## Validating Correlation: Signal or Noise?
 
