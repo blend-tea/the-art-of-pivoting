@@ -273,6 +273,84 @@ The real strength of uncommon data points lies in composite correlation, their a
 
 By expanding our collection to include these unconventional data points, we can achieve deeper insights and better threat discovery.
 
+## An Inventory of Uncommon Data Points
+
+### DOM Hash (`dom-hash`): Structural Fingerprinting of HTML Content
+
+HTML content is an abundant but often underutilized source of correlation in threat intelligence. While much prior work has focused on visual similarity, content hashing, or full document classification, many operational use cases do not require that level of complexity. During discussions with CERT-PL and empirical testing against large-scale web capture datasets (notably LookyLoo), we observed that a remarkably simple strategy yields excellent results for infrastructure pivoting: hashing the structure of the HTML document rather than its content.
+
+This observation led to the development of the **dom-hash** algorithm.
+
+#### Core Idea
+
+The central idea behind dom-hash is to treat the **Document Object Model (DOM) structure** of an HTML page as a fingerprint. Instead of hashing text, scripts, or resources—which are frequently modified or localized—dom-hash focuses exclusively on the **sequence of HTML tag names** present in the document.
+
+By ignoring content and attributes and retaining only structural information, dom-hash captures layout and template reuse while remaining resilient to superficial changes.
+
+In practice, many phishing kits, scam pages, ransomware leak sites, and underground storefronts reuse the same HTML templates across multiple deployments. Even when branding, language, or embedded resources change, the underlying DOM structure often remains untouched.
+
+#### Algorithm Description
+
+At a high level, the dom-hash algorithm follows these steps:
+
+1. Parse the HTML document into a DOM tree.
+2. Extract the ordered list of all HTML tag names.
+3. Concatenate the tag names into a single string, preserving order.
+4. Compute a cryptographic hash over that string.
+5. Truncate the result to a fixed length for storage and correlation.
+
+A reference implementation in Python is shown below using the [BeautifulSoup library](https://beautiful-soup-4.readthedocs.io/en/latest/):
+
+```python
+def _compute_dom_hash(html_content):
+    soup = BeautifulSoup(html_content, "lxml")
+    to_hash = "|".join(t.name for t in soup.findAll()).encode()
+    return sha256(to_hash).hexdigest()[:32]
+```
+
+This simplicity is intentional. The algorithm is fast, deterministic, and easy to reproduce across tooling and datasets.
+
+#### Why `dom-hash` Works in Practice
+
+The strength of dom-hash lies not in theoretical uniqueness, but in **operational neglect**. Threat actors frequently copy and redeploy HTML templates without altering their structural composition. While they may change text, images, JavaScript, or styling, the DOM skeleton remains identical across campaigns or infrastructures.
+
+Because dom-hash ignores volatile elements, it is resistant to:
+
+- Language changes
+- Branding modifications
+- Variable content such as dates or victim identifiers
+- Minor cosmetic edits
+
+At the same time, it is sensitive enough to distinguish between fundamentally different templates.
+
+#### Use Cases for Pivoting
+
+dom-hash is particularly effective for:
+
+- Linking phishing pages derived from the same kit as implemented in [LookyLoo](https://github.com/Lookyloo/lookyloo)
+- Correlating ransomware leak sites with similar layouts
+- Identifying cloned underground marketplaces or scam portals
+- Pivoting between Tor hidden services and clear-web infrastructure using shared templates
+
+As with other uncommon data points, dom-hash is rarely sufficient on its own for attribution. Its value emerges when used as a **pivot primitive** and combined with other indicators such as favicon hashes, TLS certificates, cookie names, or hosting patterns.
+
+#### Limitations and Noise Considerations
+
+dom-hash is intentionally coarse and therefore has limitations:
+
+- Very common frameworks or boilerplate templates may produce high-cardinality correlations.
+- Minor structural changes (e.g. adding or removing wrapper elements) will alter the hash.
+- Dynamic, heavily JavaScript-driven applications may yield unstable DOMs depending on rendering context.
+
+For these reasons, dom-hash should be interpreted like other structural or weak indicators: as a way to surface candidate relationships that require analyst validation rather than as definitive proof of common ownership.
+
+#### Positioning dom-hash Among Uncommon Data Points
+
+dom-hash exemplifies a broader category of uncommon data points: indicators that are easy to compute, inexpensive to store, and often ignored by adversaries. Its effectiveness does not come from cryptographic strength or semantic understanding, but from exploiting operational reuse and oversight.
+
+Used correctly, dom-hash enables analysts to pivot across infrastructure that would otherwise appear unrelated, reinforcing the central theme of this book: meaningful intelligence often emerges not from perfect indicators, but from simple signals applied creatively and in combination.
+
+
 ## Validating Correlation: Signal or Noise?
 
 Not every correlation is equally useful. While correlation is essential for pivoting, it can also generate large volumes of relationships that are technically correct but analytically unhelpful. One of the core skills of an intelligence analyst is therefore the ability to assess whether a correlation represents a meaningful investigative lead or merely background noise.
