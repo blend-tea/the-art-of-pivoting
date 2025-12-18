@@ -2,7 +2,7 @@
 title: "The Art of Pivoting"
 description: "The Art of Pivoting: Techniques for Intelligence Analysts to Discover New Relationships"
 author: [Alexandre Dulaunoy]
-date: "2025-06-04"
+date: "2025-12-18"
 keywords: [threat intelligence, cti, techniques, art of pivoting]
 titlepage: true
 logo-width: "80mm"
@@ -420,6 +420,96 @@ Favicons are a textbook example of how low-entropy, non-obvious artifacts can ou
 
 When used as part of a broader pivoting strategy—combined with structural, temporal, and contextual data—favicons remain one of the most effective and accessible uncommon data points available to analysts. They reinforce a recurring lesson of pivot-based analysis: intelligence value often comes from what attackers ignore, not from what they try to protect.
 
+### Graphically Encoded Information: QR Codes, Barcodes, and Visual Payloads
+
+Graphically encoded information—such as QR codes, barcodes, and similar visual symbologies—is increasingly present in threat actor ecosystems. Once limited to logistics and retail, these encodings now appear regularly across social networks, Tor hidden services, phishing pages, scam portals, and even ransomware negotiation sites. Their growing adoption makes them an important and often overlooked source of correlation.
+
+Unlike traditional indicators, these data points are not expressed as text or network artifacts. They are embedded visually within images, screenshots, banners, or scanned documents. As a result, they are frequently ignored by automated collection pipelines and underestimated by analysts—precisely the conditions that make them valuable for pivoting.
+
+#### Why Graphically Encoded Data Matters
+
+QR codes and barcodes serve a practical function for threat actors:
+
+- Redirecting victims to payment pages or wallets
+- Linking to messaging platforms or support channels
+- Encoding identifiers, order numbers, or tracking references
+- Facilitating cash-out, delivery, or coordination processes
+
+Because these codes are meant to be scanned, not read, threat actors often reuse them verbatim across posts, platforms, and campaigns. This reuse creates durable correlation points that survive changes in text, language, or surrounding context.
+
+#### QR Codes as Correlation Primitives
+
+QR codes are especially prevalent in modern threat activity. They are observed in:
+
+- Social media scams and fraud campaigns
+- Tor hidden services and underground forums
+- Ransomware leak sites and negotiation portals
+- Phishing pages designed for mobile users
+
+From an analytical perspective, a QR code is not just an image—it is a container for structured data. Once decoded, it often reveals:
+
+- URLs or deep links
+- Cryptocurrency addresses
+- Messaging identifiers
+- Embedded metadata or parameters
+
+When the same decoded payload appears across multiple images or platforms, it becomes a strong pivot point. Even when QR codes are visually modified (resized, recolored, embedded in different layouts), their encoded content often remains identical.
+
+#### Barcode Extraction Beyond Retail Contexts
+
+Barcodes—such as Code 128, Code 39, Code 93, and similar formats—have also proven valuable in threat intelligence contexts. Initially implemented in response to law enforcement requests, barcode extraction quickly demonstrated broader utility.
+
+Barcodes appear in:
+
+- Large-scale data leaks and document dumps
+- Screenshots of financial transactions or receipts
+- Social media posts related to cash-out operations
+- Internal references shared between threat actors
+
+In many cases, barcodes encode identifiers that are reused across communications or platforms. When extracted and normalized, these identifiers can link seemingly unrelated datasets or interactions.
+
+#### Operational Extraction and Correlation
+
+The primary challenge with graphically encoded data points is not correlation, but **extraction**. Unlike text-based indicators, they require image processing and decoding before they become usable.
+
+The [AIL project](https://ail-project.org/blog/2024/10/03/AIL-v5.8.released/) implemented a multi-layered detection strategy for QR code extraction to handle cases where multiple QR codes are present, partially visible, or embedded within a single image, illustrating how challenging efficient and reliable extraction can be.
+
+Once extracted, however, they behave like any other data point:
+
+- They can be stored as normalized values
+- They can be correlated across events and datasets
+- They can serve as pivot points for further investigation
+
+In practice, QR codes and barcodes often complement other uncommon indicators. A single QR code may connect a phishing page to a Telegram channel, a ransomware negotiation page, and a social media account—three environments that rarely share traditional indicators.
+
+#### Noise, Reuse, and Analyst Validation
+
+As with all uncommon data points, context matters.
+
+- Widely reused payment QR codes may indicate shared services rather than shared operators.
+- Some barcodes encode generic or transactional data with limited intelligence value.
+- High-volume reuse may signal infrastructural or service-level commonality rather than campaign-level linkage.
+
+Analyst validation is therefore essential. The investigative value of a graphically encoded data point increases significantly when combined with temporal patterns, platform overlap, or supporting indicators such as DOM structure, favicon reuse, or hosting characteristics.
+
+#### Beyond QR Codes and Barcodes
+
+QR codes and barcodes are representative of a broader class of **visual payloads**:
+
+- Embedded links in images
+- Steganographic markers
+- Watermarks or visual identifiers
+- Machine-readable symbols not intended for human interpretation
+
+As vision and image-processing capabilities improve, these artifacts become increasingly accessible for large-scale analysis. Their intelligence value does not come from complexity, but from neglect: they exist outside the traditional mental model of “indicators,” and are therefore rarely protected or rotated by adversaries.
+
+#### Positioning Graphically Encoded Data Points in Pivoting
+
+Graphically encoded information reinforces a recurring theme in pivot-based analysis: meaningful correlations often originate from places analysts are not trained to look. QR codes and barcodes bridge digital and physical workflows, automate interaction, and silently carry identifiers across platforms.
+
+When treated as first-class data points—extracted, normalized, and correlated—they enable pivots that bypass many of the defensive measures designed to evade traditional indicator-based analysis. Used in combination with other uncommon data points, they significantly expand the analyst’s investigative surface without increasing reliance on brittle or easily rotated indicators.
+
+
 ## Validating Correlation: Signal or Noise?
 
 Not every correlation is equally useful. While correlation is essential for pivoting, it can also generate large volumes of relationships that are technically correct but analytically unhelpful. One of the core skills of an intelligence analyst is therefore the ability to assess whether a correlation represents a meaningful investigative lead or merely background noise.
@@ -520,13 +610,11 @@ While the presentation’s narrative was time-limited, the ambition of this book
 
 ## License
 
-Copyright (C) 2024-2025 Alexandre Dulaunoy
+*The Art of Pivoting: Techniques for Intelligence Analysts to Discover New Relationships* (c) Alexandre Dulaunoy
 
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+*The Art of Pivoting: Techniques for Intelligence Analysts to Discover New Relationships* is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>. 
+You should have received a copy of the license along with this work. If not, see [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/).
 
 [^sdhash]: [https://github.com/sdhash/sdhash](https://github.com/sdhash/sdhash) [Evaluating Similariy Digests: A Study of TLSH, ssdeep, and sdhash Against Common File Modifications](https://dzone.com/articles/similarity-digests-tlsh-ssdeep-sdhash-benchmark) shows the diversity of similary digests/fuzzing hashing and the difficulty to find the perfect one even for a single task such as classifying malware binaries.
 [^collision-md5]: [Fast Collision Attack on MD5](https://eprint.iacr.org/2006/104) presents an improved attack algorithm to find two-block collisions of the hash function MD5.
