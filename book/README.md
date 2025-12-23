@@ -251,20 +251,7 @@ Fuzzy and group-based correlations therefore extend the pivoting process beyond 
 
 ### Analytical Strategies of Pivoting
 
-| Pivot Category | Pivot Type | Description / Examples |
-|---------------|------------|------------------------|
-| Data Points (selector, attribute, IoC) | Current Pivoting | Analysis based on live or near-real-time observations |
-| Current Pivoting | Live Infrastructure Mapping | DNS queries, active scanning |
-| Current Pivoting | Communication Behavior | Querying services, active monitoring |
-| Current Pivoting | Operational Patterns | Key materials, similar malicious files |
-| Data Points (selector, attribute, IoC) | Historical Pivoting | Analysis based on past or archived data |
-| Historical Pivoting | Past Infrastructure Reuse | Similar network infrastructure, default setups |
-| Historical Pivoting | Historical Public Records | WHOIS records, TLS key materials or parameters |
-| Historical Pivoting | Historical Records | Leaked credentials, identifier or alias reuse |
-| Data Points (selector, attribute, IoC) | Predictive Pivoting | Analysis aiming to anticipate future activity |
-| Predictive Pivoting | Recurring TTPs | Similar patterns or techniques reused over time |
-| Predictive Pivoting | Predictive Patterns | Domain generation algorithms, reused naming patterns |
-| Predictive Pivoting | Forecasting Tools / Techniques | Tools, techniques, or practices for forecasting activity |
+![An overview of pivoting strategies applied across different time perspectives.](./img/overview-pivot.png)
 
 Pivoting can also be thought of across different points in time: **current**, **historical**, and **predictive**.
 
