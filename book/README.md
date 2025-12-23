@@ -2,7 +2,7 @@
 title: "The Art of Pivoting"
 description: "The Art of Pivoting: Techniques for Intelligence Analysts to Discover New Relationships"
 author: [Alexandre Dulaunoy]
-date: "2025-12-20"
+date: "2025-12-23"
 keywords: [threat intelligence, cti, techniques, art of pivoting]
 titlepage: true
 logo-width: "80mm"
@@ -11,6 +11,7 @@ footer-left: "[https://github.com/adulau/the-art-of-pivoting](https://github.com
 toc-own-page: true
 colorlinks: true
 titlepage-logo: "img/verdier.jpg"
+table-use-row-colors: true
 mainfont: NotoSans
 mainfontfallback:
   - "NotoColorEmoji:mode=harf"
@@ -18,6 +19,8 @@ header-includes:
   - \usepackage[table]{xcolor}
   - \definecolor{lightgray}{gray}{0.95}
   - \newcounter{none}
+  - \usepackage{tabularx}
+  - \usepackage{pdflscape}
 ---
 
 # The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World
@@ -1117,6 +1120,44 @@ Rejecting a correlation is not failure, it is an essential part of maintaining a
 
 Ultimately, effective pivoting depends not on the quantity of correlations, but on the analyst’s ability to evaluate their relevance. Correlation produces possibilities; validation turns them into intelligence.
 
+
+### A Logical Map of Pivoting Opportunities
+
+The following table provides a condensed, logical map of pivoting opportunities derived from the techniques and data points discussed throughout this book. It does not represent an exhaustive list of indicators, nor does it prescribe a fixed investigative workflow. Instead, it illustrates how diverse data points—strong and weak, technical and contextual—can serve as starting points for correlation and exploration.
+
+Each row represents a potential pivot: a movement from one observable element to another based on a shared value, structural similarity, behavioral pattern, or analytical insight. The table intentionally includes correlations that are known to generate noise. This is by design. As emphasized throughout the book, noise is not merely something to be avoided; it is often a signal in itself, helping analysts identify generic artifacts, common services, or misleading patterns that should be filtered, warned about, or deprioritized.
+
+The table should be read as a **navigation aid for the correlation space**, not as an event-centric checklist. Its purpose is to help analysts reason about *where pivots are possible*, *what kind of relationship they rely on*, and *what pitfalls to expect*. In practice, the most effective investigations emerge when multiple pivots reinforce each other, transforming weak or unconventional data points into meaningful intelligence through composite correlation.
+
+
+| Starting Data Point (Selector) | Correlated Data Point(s) | Correlation Type | Pivot Purpose | Typical Noise Pattern |
+|-------------------------------|--------------------------|------------------|---------------|-----------------------|
+| Domain name | IP address | Exact match / DNS | Discover hosting, infrastructure reuse | Shared hosting, CDNs |
+| IP address | Hostnames | Exact match / Passive DNS | Identify campaigns or staging infrastructure | Multi-tenant hosting |
+| TLS certificate fingerprint | Domains, IPs | Exact match | Strong infrastructure linkage | Free cert automation |
+| SSH key fingerprint | Servers, onion services | Exact match | High-confidence operator reuse | Legitimate admin reuse |
+| File hash (SHA-256) | Malware samples | Exact match | Binary identity confirmation | None (strong signal) |
+| File hash (MD5) | Malware samples | Exact match (weak) | Initial clustering | Collisions, repacking |
+| Fuzzy hash (SSDEEP, TLSH) | Malware families | Similarity | Variant discovery | Common packers |
+| CIDR / ASN | IPs, domains | Group-based | Infrastructure clustering | Large providers |
+| DOM structure (`dom-hash`) | Websites, onion services | Structural similarity | Template / kit reuse | Common frameworks |
+| Favicon hash (MMH3) | Websites, onion services | Exact match (weak) | Cross-layer discovery (Tor ↔ clear) | Default favicons |
+| HTTP header hash (HHHash) | Servers | Structural similarity | Backend / proxy reuse | CDN normalization |
+| Cookie names | Websites | Exact match | Application stack fingerprinting | Framework defaults |
+| Cookie values | Sessions, users | Exact match (rare) | Debug or operator errors | High entropy noise |
+| Analytics ID (GA, etc.) | Websites, onion services | Exact match | Template / operator reuse | Shared services |
+| QR code payload | URLs, wallets, IDs | Exact match | Cross-platform linkage | Payment providers |
+| Barcode value | Transactions, leaks | Exact match | Cash-out or workflow linkage | Generic identifiers |
+| Image OCR text | Usernames, IDs, messages | Text match | HUMINT / OSINT pivoting | OCR errors |
+| Image semantic description | Objects, activities | Semantic similarity | Behavioral clustering | Generic scenes |
+| Filenames | Documents, posts | Exact / pattern match | Human behavior correlation | Generic filenames |
+| Filenames (patterns) | Releases, leaks | Pattern similarity | Campaign narrative discovery | Automated naming |
+| Usernames / aliases | Forums, social networks | Exact match | Identity linkage | Common handles |
+| Embedded IDs (various) | Services, accounts | Exact match | Infrastructure glue | Shared platforms |
+| High-cardinality values | Correlation graph | Cardinality analysis | Noise identification | Over-correlation |
+| Low-frequency outliers | Correlation graph | Statistical deviation | Discovery of uncommon data points | Data sparsity |
+
+ 
 ## Origin of the Book
 
 This book began life as a presentation at the [2025 FIRST Cyber Threat Intelligence Conference](https://www.first.org/conference/firstcti25/program#pThe-Art-of-Pivoting-How-You-Can-Discover-More-from-Adversaries-with-Existing-Inf) held in Berlin (April 21-23, 2025). From the plenary stage, the theme “The Art of Pivoting” resonated with analysts, threat-intelligence practitioners, and incident-response teams alike: how to discover more from adversaries using existing information. Inspired by the lively exchange of ideas and the collaborative spirit of the conference, the authors decided to expand the talk into a full-length guide.
