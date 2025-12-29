@@ -2,7 +2,7 @@
 title: "The Art of Pivoting"
 description: "The Art of Pivoting: Techniques for Intelligence Analysts to Discover New Relationships"
 author: [Alexandre Dulaunoy]
-date: "2025-12-23"
+date: "2025-12-29"
 keywords: [threat intelligence, cti, techniques, art of pivoting]
 titlepage: true
 logo-width: "80mm"
@@ -136,6 +136,8 @@ This continuous nature is important: correlation is not a one-time action. A dat
 ![A screenshot of the MISP automatic correlation feature, which allows analysts to quickly identify correlating data points.](./img/misp-correlation.png)
 
 Automatic correlation excels at scale and speed. It ensures consistency, repeatability, and broad coverage across large volumes of data. However, it operates strictly within the boundaries of what is encoded in rules and algorithms and can therefore generate false positives or noisy correlations, especially when weak or high-entropy data points are involved. This analytical noise can become a burden for analysts, requiring manual validation, contextual filtering, and prioritization to separate meaningful relationships from coincidental ones.
+
+> :brain: Automatic inference–based pivoting extends traditional correlation by introducing probabilistic or heuristic reasoning into the analysis process. While correlation identifies observable relationships between data points, inference attempts to draw conclusions about unseen or implicit relationships.  This distinction is critical. Inference can easily drift from evidence into assumption if not handled carefully. A simple illustration highlights the risk: *“The cat drinks water. I drink water. Therefore, I am a cat.”* The shared attribute (drinking water) is real, but the conclusion is clearly invalid. This is a classic example of how correlation, even when factually correct, does not imply equivalence or causation.  In threat analysis, similar logical shortcuts can occur when multiple weak signals are treated as confirmation of a shared actor or campaign. Automatic inference systems may amplify such errors if their outputs are not contextualized or validated by analysts.  For this reason, inference-based pivoting should be treated as hypothesis generation rather than evidence. It can highlight areas worth exploring, but it must always be followed by validation using stronger indicators, contextual understanding, and analyst judgment. Used responsibly, inference enhances exploratory analysis. Used uncritically, it risks creating convincing but false narratives—an outcome far more dangerous than missing a single correlation.
 
 
 #### Manual and Human-Driven Correlation
