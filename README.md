@@ -23,6 +23,9 @@ The approach presented throughout this book is intentionally built upon open-sou
 - [Markdown - The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World](https://github.com/adulau/the-art-of-pivoting/tree/main/book)
 - [EPUB - The Art of Pivoting - Techniques for Intelligence Analysts to Discover New Relationships in a Complex World](https://raw.githubusercontent.com/adulau/the-art-of-pivoting/refs/heads/main/output/the-art-of-pivoting.epub)
 
+## Hardcopy - printed version
+
+- [Printed version](https://www.lulu.com/shop/alexandre-dulaunoy/the-art-of-pivoting-techniques-for-intelligence-analysts-to-discover-new-relationships-in-a-complex-world/paperback/product-q6wyrgq.html?page=1&pageSize=4) - I was curious, so I decided to self-publish on Lulu after a few people asked for a physical copy. I have no idea about the print quality or the final result, this is just a test. Any revenue from the book (if there is any) will be redistributed to support open-source projects.
 
 ## License
 
